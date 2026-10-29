@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f2f5f8">
+  <title>8085 Traffic Light Controller</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <section class="welcome-screen" id="welcome-screen" aria-labelledby="welcome-title">
+    <div class="welcome-shell">
+      <header class="welcome-header">
+        <img src="assets/nita-logo.png" alt="National Institute of Technology Agartala logo">
+        <div>
+          <strong>National Institute of Technology Agartala</strong>
+          <span>Department of Electrical Engineering</span>
+        </div>
+      </header>
+
+      <div class="welcome-card">
+        <div class="welcome-visual">
+          <div class="welcome-visual-content">
+            <span class="welcome-label"><span></span> PROJECT PRESENTATION</span>
+            <h1 id="welcome-title">Traffic light system <span>using 8085 microcontroller</span></h1>
+            <p>An interactive demonstration of an 8085-based traffic signal controller.</p>
+            <div class="welcome-processor"><span class="processor-dots" aria-hidden="true"><i></i><i></i><i></i></span> 8085 MICROPROCESSOR PROJECT</div>
+          </div>
+          <span class="welcome-photo-credit">NIT Agartala</span>
+        </div>
+
+        <div class="welcome-details">
+          <div class="welcome-section-title">
+            <p class="welcome-kicker">PROJECT PRESENTATION</p>
+            <h2>Presented by</h2>
+          </div>
+
+          <ul class="team-list" aria-label="Project team members">
+            <li><span class="person-avatar" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"></circle><path d="M4.5 21v-1.2a7.5 7.5 0 0 1 15 0V21z"></path></svg></span><span>Nainsi Verma</span></li>
+            <li><span class="person-avatar" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"></circle><path d="M4.5 21v-1.2a7.5 7.5 0 0 1 15 0V21z"></path></svg></span><span>Ankita Mandal</span></li>
+            <li><span class="person-avatar" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"></circle><path d="M4.5 21v-1.2a7.5 7.5 0 0 1 15 0V21z"></path></svg></span><span>Anand Piyush Dwivedi</span></li>
+            <li><span class="person-avatar" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"></circle><path d="M4.5 21v-1.2a7.5 7.5 0 0 1 15 0V21z"></path></svg></span><span>Ankit Nandi</span></li>
+            <li><span class="person-avatar" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"></circle><path d="M4.5 21v-1.2a7.5 7.5 0 0 1 15 0V21z"></path></svg></span><span>Rudra Krishan Paul</span></li>
+            <li><span class="person-avatar" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"></circle><path d="M4.5 21v-1.2a7.5 7.5 0 0 1 15 0V21z"></path></svg></span><span>Asmit Bhattacharya</span></li>
+          </ul>
+
+          <div class="faculty-card">
+            <span class="faculty-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"></circle><path d="M4.5 21v-1.2a7.5 7.5 0 0 1 15 0V21z"></path></svg></span>
+            <span class="person-info"><small>Faculty guide</small><strong>Dr. Arup Ratan Bhowmik</strong><span>Assistant Professor · Electrical Engineering</span></span>
+          </div>
+
+          <button class="welcome-button" id="enter-simulator" type="button">
+            Open the Simulator
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h11m-5-5 5 5-5 5"></path></svg>
+          </button>
+        </div>
+      </div>
+
+      <footer class="welcome-footer"><span>8085 TRAFFIC LIGHT CONTROLLER</span><span>NIT AGARTALA <i>·</i> ELECTRICAL ENGINEERING</span></footer>
+    </div>
+  </section>
+
+  <div class="page-shell" id="simulator-app" hidden>
+    <header class="site-header">
+      <a class="brand" href="#" aria-label="8085 Traffic Controller at NIT Agartala">
+        <img class="brand-logo" src="assets/nita-logo.png" alt="National Institute of Technology Agartala logo">
+        <span class="brand-copy"><strong>NIT Agartala</strong><small>8085 Traffic Controller</small></span>
+      </a>
+      <div class="header-actions">
+        <button class="icon-button theme-button" id="theme-toggle" type="button" aria-label="Switch to dark theme" title="Toggle color theme">
+          <svg class="theme-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"></path></svg>
+          <svg class="theme-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.2 15.4A8.5 8.5 0 0 1 8.6 3.8 8.5 8.5 0 1 0 20.2 15.4Z"></path></svg>
+        </button>
+      </div>
+    </header>
+
+    <main>
+      <section class="intro">
+        <div class="intro-copyblock">
+          <h1>Traffic light system<br><span>using 8085 microcontroller</span></h1>
+        </div>
+      </section>
+
+      <section class="top-grid" aria-label="Traffic signals and output port">
+        <article class="panel signal-panel">
+          <div class="panel-heading">
+            <div>
+              <h2 class="section-kicker">Signal status</h2>
+            </div>
+            <span class="phase-badge" id="phase-badge"><span class="status-dot"></span> READY</span>
+          </div>
+
+          <div class="signal-stage">
+            <div class="traffic-unit">
+              <div class="traffic-housing" aria-label="Three-lamp traffic signal">
+                <span class="lamp lamp-red" id="lamp-red" aria-label="Red lamp off"></span>
+                <span class="lamp lamp-yellow" id="lamp-yellow" aria-label="Yellow lamp off"></span>
+                <span class="lamp lamp-green" id="lamp-green" aria-label="Green lamp off"></span>
+              </div>
+              <div class="signal-post" aria-hidden="true"></div>
+              <div class="signal-base" aria-hidden="true"></div>
+              <span class="signal-caption">VEHICLE SIGNAL</span>
+            </div>
+            <div class="signal-divider" aria-hidden="true"></div>
+            <div class="pedestrian-unit">
+              <span class="signal-caption">PEDESTRIAN</span>
+              <div class="ped-housing">
+                <div class="ped-state" id="walk-indicator">
+                  <span class="ped-icon walk-icon" aria-hidden="true">●</span>
+                  <span>WALK</span>
+                </div>
+                <div class="ped-state" id="dont-walk-indicator">
+                  <span class="ped-icon stop-icon" aria-hidden="true">■</span>
+                  <span>DON'T<br>WALK</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="phase-readout">
+            <div>
+              <span class="readout-label">Current phase</span>
+              <strong id="phase-name">Waiting to start</strong>
+            </div>
+            <div class="phase-time">
+              <span class="readout-label">Planned / actual time</span>
+              <strong id="phase-time">—</strong>
+            </div>
+          </div>
+        </article>
+
+        <article class="panel port-panel">
+          <div class="panel-heading">
+            <div>
+              <h2 class="section-kicker">Output port</h2>
+            </div>
+            <span class="live-label"><span class="live-dot"></span> Live</span>
+          </div>
+          <div class="port-value-row">
+            <div><span class="readout-label">Hex value</span><strong class="port-hex mono" id="port-hex">00H</strong></div>
+            <div class="binary-value"><span class="readout-label">Binary value</span><strong class="mono" id="port-binary">00000000</strong></div>
+          </div>
+          <div class="bit-row" id="bit-row" aria-label="Output bits D7 through D0">
+            <div class="bit-cell" data-bit="7"><span class="bit-index">D7</span><span class="bit-light"></span><span class="bit-name">Don't<br>walk</span></div>
+            <div class="bit-cell" data-bit="6"><span class="bit-index">D6</span><span class="bit-light"></span><span class="bit-name">Walk</span></div>
+            <div class="bit-cell" data-bit="5"><span class="bit-index">D5</span><span class="bit-light"></span><span class="bit-name"></span></div>
+            <div class="bit-cell" data-bit="4"><span class="bit-index">D4</span><span class="bit-light"></span><span class="bit-name">Red</span></div>
+            <div class="bit-cell" data-bit="3"><span class="bit-index">D3</span><span class="bit-light"></span><span class="bit-name"></span></div>
+            <div class="bit-cell" data-bit="2"><span class="bit-index">D2</span><span class="bit-light"></span><span class="bit-name">Yellow</span></div>
+            <div class="bit-cell" data-bit="1"><span class="bit-index">D1</span><span class="bit-light"></span><span class="bit-name"></span></div>
+            <div class="bit-cell" data-bit="0"><span class="bit-index">D0</span><span class="bit-light"></span><span class="bit-name">Green</span></div>
+          </div>
+        </article>
+      </section>
+
+      <section class="control-grid" aria-label="Simulator controls and registers">
+        <article class="panel controls-panel">
+          <div class="panel-heading compact-heading">
+            <div>
+              <h2 class="section-kicker">Control the simulation</h2>
+            </div>
+            <span class="execution-state" id="execution-state" role="status">READY</span>
+          </div>
+          <div class="control-buttons">
+            <button class="button button-run" id="run-button" type="button">
+              <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2.5 13 8l-9 5.5z"></path></svg> Run
+            </button>
+            <button class="button button-secondary" id="pause-button" type="button" disabled>
+              <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 3.5h2v9h-2zm5 0h2v9h-2z"></path></svg> Pause
+            </button>
+            <button class="button button-secondary" id="step-button" type="button">
+              <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 2.5 11 8l-8 5.5zM12.5 2.5h1.5v11h-1.5z"></path></svg> Step
+            </button>
+            <button class="button button-reset" id="reset-button" type="button" aria-label="Reset simulator">
+              <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.3 5.2A5.4 5.4 0 1 1 2.7 9M3.3 2.7v2.8H.5"></path></svg>
+            </button>
+          </div>
+          <div class="control-options">
+            <div class="speed-control">
+              <div class="option-heading"><label for="speed-slider">Execution speed</label><strong id="speed-value">1×</strong></div>
+              <input id="speed-slider" type="range" min="0" max="2" step="1" value="0" aria-label="Execution speed, 1x to 100x">
+              <div class="speed-labels"><span>1×</span><span>10×</span><span>100×</span></div>
+            </div>
+            <div class="mode-control">
+              <span class="option-heading">Timing mode</span>
+              <button class="mode-toggle" id="mode-toggle" type="button" aria-pressed="false">
+                <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                <span id="mode-label">Real time</span>
+              </button>
+            </div>
+          </div>
+          <p class="control-hint" id="control-hint">Step advances one visible instruction. The 65,535-count inner loop is condensed.</p>
+        </article>
+
+        <article class="panel registers-panel">
+          <div class="panel-heading compact-heading">
+            <div>
+              <h2 class="section-kicker">Processor state</h2>
+            </div>
+            <span class="register-chip">8085</span>
+          </div>
+          <div class="register-grid">
+            <div class="register"><span>A</span><strong class="mono" id="reg-a">00H</strong></div>
+            <div class="register register-count"><span>B <small>COUNT</small></span><strong class="mono" id="reg-b">00H</strong></div>
+            <div class="register"><span>D</span><strong class="mono" id="reg-d">00H</strong></div>
+            <div class="register"><span>E</span><strong class="mono" id="reg-e">00H</strong></div>
+            <div class="register register-wide"><span>SP <small>STACK POINTER</small></span><strong class="mono" id="reg-sp">1234H</strong></div>
+            <div class="register register-wide"><span>PC <small>INSTRUCTION</small></span><strong class="mono" id="reg-pc">2000H</strong></div>
+          </div>
+          <div class="countdown-row">
+            <span class="countdown-icon" aria-hidden="true">↘</span>
+            <span>Delay passes remaining</span>
+            <strong id="countdown-value">—</strong>
+          </div>
+        </article>
+      </section>
+
+      <section class="panel timeline-panel" aria-labelledby="timeline-title">
+        <div class="panel-heading timeline-heading">
+          <div>
+            <h2 class="section-kicker" id="timeline-title">Repeating sequence</h2>
+          </div>
+          <span class="cycle-total">One full cycle<strong>About 19.92 seconds</strong></span>
+        </div>
+        <div class="timeline-track" id="timeline-track" aria-label="Green 7 seconds, Yellow 2 seconds, Red 10 seconds">
+          <div class="timeline-segment segment-green" data-phase="green">
+            <span class="segment-fill"></span>
+          </div>
+          <div class="timeline-segment segment-yellow" data-phase="yellow">
+            <span class="segment-fill"></span>
+          </div>
+          <div class="timeline-segment segment-red" data-phase="red">
+            <span class="segment-fill"></span>
+          </div>
+        </div>
+        <div class="timeline-legend" aria-label="Phase durations">
+          <div class="timeline-phase"><span class="phase-key phase-key-green"></span><span><strong>Green</strong><small>7 sec planned · 7.34 sec actual</small></span></div>
+          <div class="timeline-phase"><span class="phase-key phase-key-yellow"></span><span><strong>Yellow</strong><small>2 sec planned · 2.10 sec actual</small></span></div>
+          <div class="timeline-phase"><span class="phase-key phase-key-red"></span><span><strong>Red</strong><small>10 sec planned · 10.49 sec actual</small></span></div>
+        </div>
+        <div class="timeline-foot"><span>Then the cycle starts again</span><span>JMP START <span aria-hidden="true">↺</span></span></div>
+      </section>
+
+      <section class="panel code-panel" aria-labelledby="code-title">
+        <div class="panel-heading code-heading">
+          <div>
+            <h2 class="section-kicker" id="code-title">Assembly listing</h2>
+          </div>
+          <span class="code-chip"><span class="code-chip-dot"></span> Highlighted as it runs</span>
+        </div>
+        <div class="code-window">
+          <div class="code-toolbar"><span class="window-dots"><i></i><i></i><i></i></span><span>traffic_controller.asm</span><span class="code-toolbar-right">8085 ASM</span></div>
+          <div class="code-list" aria-label="8085 assembly code">
+            <div class="code-row"><span class="line-number">01</span><code><span class="instruction" id="ins-setup-sp">LXI SP,1234H</span></code></div>
+            <div class="code-row"><span class="line-number">02</span><code><span class="code-label">START:</span> <span class="instruction" id="ins-green-load">MVI A,41H</span> <span class="separator">/</span> <span class="instruction" id="ins-green-out">OUT 00H</span> <span class="separator">/</span> <span class="instruction" id="ins-green-count">MVI B,07H</span> <span class="separator">/</span> <span class="instruction" id="ins-green-call">CALL DELAY</span></code></div>
+            <div class="code-row"><span class="line-number">03</span><span class="line-gutter"></span><code><span class="instruction" id="ins-yellow-load">MVI A,84H</span> <span class="separator">/</span> <span class="instruction" id="ins-yellow-out">OUT 00H</span> <span class="separator">/</span> <span class="instruction" id="ins-yellow-count">MVI B,02H</span> <span class="separator">/</span> <span class="instruction" id="ins-yellow-call">CALL DELAY</span></code></div>
+            <div class="code-row"><span class="line-number">04</span><span class="line-gutter"></span><code><span class="instruction" id="ins-red-load">MVI A,90H</span> <span class="separator">/</span> <span class="instruction" id="ins-red-out">OUT 00H</span> <span class="separator">/</span> <span class="instruction" id="ins-red-count">MVI B,0AH</span> <span class="separator">/</span> <span class="instruction" id="ins-red-call">CALL DELAY</span></code></div>
+            <div class="code-row"><span class="line-number">05</span><span class="line-gutter"></span><code><span class="instruction" id="ins-jmp-start">JMP START</span></code></div>
+            <div class="code-row code-gap"><span class="line-number">06</span><code><span class="code-label">DELAY:</span> <span class="instruction" id="ins-push-psw">PUSH PSW</span> <span class="separator">/</span> <span class="instruction" id="ins-push-d">PUSH D</span> <span class="separator">/</span> <span class="instruction" id="ins-mov-a-b">MOV A,B</span> <span class="separator">/</span> <span class="instruction" id="ins-add-a">ADD A</span> <span class="separator">/</span> <span class="instruction" id="ins-mov-b-a">MOV B,A</span></code></div>
+            <div class="code-row"><span class="line-number">07</span><span class="line-gutter"></span><code><span class="code-label">OUTER:</span> <span class="instruction" id="ins-lxi-d">LXI D,FFFFH</span></code></div>
+            <div class="code-row"><span class="line-number">08</span><span class="line-gutter"></span><code><span class="code-label">INNER:</span> <span class="instruction" id="ins-dcx-d">DCX D</span> <span class="separator">/</span> <span class="instruction" id="ins-mov-a-d">MOV A,D</span> <span class="separator">/</span> <span class="instruction" id="ins-ora-e">ORA E</span> <span class="separator">/</span> <span class="instruction" id="ins-jnz-inner">JNZ INNER</span></code></div>
+            <div class="code-row"><span class="line-number">09</span><span class="line-gutter"></span><code><span class="instruction" id="ins-dcr-b">DCR B</span> <span class="separator">/</span> <span class="instruction" id="ins-jnz-outer">JNZ OUTER</span> <span class="separator">/</span> <span class="instruction" id="ins-pop-d">POP D</span> <span class="separator">/</span> <span class="instruction" id="ins-pop-psw">POP PSW</span> <span class="separator">/</span> <span class="instruction" id="ins-ret">RET</span></code></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="lower-grid">
+        <article class="panel calculator-panel" aria-labelledby="calculator-title">
+          <div class="panel-heading">
+            <div>
+              <h2 class="section-kicker" id="calculator-title">8085 loop estimator</h2>
+            </div>
+            <span class="calculator-icon" aria-hidden="true">∑</span>
+          </div>
+          <div class="calculator-inputs">
+            <label class="field"><span>Nominal delay <small>X seconds</small></span><span class="input-wrap"><input id="seconds-input" type="number" min="1" max="255" step="1" value="7" inputmode="numeric"><span>s</span></span></label>
+            <label class="field"><span>Crystal frequency</span><span class="input-wrap"><input id="frequency-input" type="number" min="0.1" max="100" step="0.1" value="6" inputmode="decimal"><span>MHz</span></span></label>
+          </div>
+          <div class="clock-note"><span class="clock-icon" aria-hidden="true">◷</span> 8085 clock = crystal ÷ 2 <span class="clock-value" id="clock-value">3 MHz</span></div>
+          <div class="calc-results">
+            <div class="calc-result"><span>Loop count <small>2X</small></span><strong id="loop-count">14</strong></div>
+            <div class="calc-result"><span>Effective B <small>8-bit</small></span><strong id="effective-count">14</strong></div>
+            <div class="calc-result"><span>T-states <small>per pass × loops</small></span><strong class="mono" id="t-states">22,020,096</strong></div>
+          </div>
+          <div class="calc-total"><span>Estimated actual delay</span><strong id="actual-delay">7.34 <small>s</small></strong></div>
+          <p class="validation-message" id="calculator-message" role="status" aria-live="polite"></p>
+        </article>
+
+        <article class="panel how-panel" aria-labelledby="how-title">
+          <div class="panel-heading">
+            <div>
+              <h2 class="section-kicker" id="how-title">The short version</h2>
+            </div>
+            <span class="how-icon" aria-hidden="true">↗</span>
+          </div>
+          <div class="explanation">
+            <div class="explanation-item">
+              <span class="explanation-number">01</span>
+              <p><strong>ADD A doubles B.</strong> The program loads X into B, moves it to A, then <code>ADD A</code> shifts it left: B becomes 2X outer-loop passes.</p>
+            </div>
+            <div class="explanation-item">
+              <span class="explanation-number">02</span>
+              <p><strong>Nested loops make the delay.</strong> Each 65,535-count inner loop costs 1,572,840 T-states; outer-loop overhead brings each pass to 1,572,864.</p>
+            </div>
+            <div class="explanation-item timing-callout">
+              <span class="callout-bar"></span>
+              <p><strong>“Exact” isn't quite exact.</strong> At a 6 MHz crystal (3 MHz clock), one pass is ≈0.524 s. So 7 s nominal is 7.34 s actual; 2 s is 2.10 s; 10 s is 10.49 s.</p>
+            </div>
+          </div>
+          <p class="overflow-note"><span aria-hidden="true">!</span> B is 8-bit: X above 127 overflows when <code>ADD A</code> doubles it.</p>
+        </article>
+      </section>
+
+    </main>
+  </div>
+</body>
+</html>
