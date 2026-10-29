@@ -4,9 +4,9 @@ const T_STATES_PER_PASS = 1_572_864;
 const CRYSTAL_MHZ = 6;
 
 const phases = [
-  { key: "green", name: "Green", port: 0x41, seconds: 7 },
-  { key: "yellow", name: "Yellow", port: 0x84, seconds: 2 },
-  { key: "red", name: "Red", port: 0x90, seconds: 10 }
+  { key: "green", name: "Green", port: 0x41, seconds: 7, pedestrian: "WALK" },
+  { key: "yellow", name: "Yellow", port: 0x84, seconds: 2, pedestrian: "DON'T WALK" },
+  { key: "red", name: "Red", port: 0x50, seconds: 10, pedestrian: "WALK" }
 ];
 
 const program = [
@@ -178,7 +178,7 @@ function updatePhaseReadout() {
 
   const seconds = activePhaseSeconds ?? phase.seconds;
   const actual = actualPhaseSeconds(seconds);
-  elements.phaseName.textContent = `${phase.name} · ${phase.key === "green" ? "WALK" : "DON'T WALK"}`;
+  elements.phaseName.textContent = `${phase.name} · ${phase.pedestrian}`;
   elements.phaseTime.textContent = `${seconds}s / ${actual.toFixed(2)}s`;
   elements.phaseBadge.dataset.phase = phase.key;
   elements.phaseBadge.innerHTML = `<span class="status-dot"></span> ${phase.name}`;
