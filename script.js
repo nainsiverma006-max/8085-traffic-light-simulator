@@ -4,7 +4,7 @@ const T_STATES_PER_PASS = 1_572_864;
 const CRYSTAL_MHZ = 6;
 
 const phases = [
-  { key: "green", name: "Green", port: 0x41, seconds: 7, pedestrian: "WALK" },
+  { key: "green", name: "Green", port: 0x81, seconds: 7, pedestrian: "DON'T WALK" },
   { key: "yellow", name: "Yellow", port: 0x84, seconds: 2, pedestrian: "DON'T WALK" },
   { key: "red", name: "Red", port: 0x50, seconds: 10, pedestrian: "WALK" }
 ];
