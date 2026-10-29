@@ -81,6 +81,15 @@ const elements = {
   walk: document.getElementById("walk-indicator"),
   dontWalk: document.getElementById("dont-walk-indicator"),
   timeline: [...document.querySelectorAll(".timeline-segment")],
+  timelineTrack: document.getElementById("timeline-track"),
+  cycleActual: document.getElementById("cycle-actual"),
+  durationInputs: {
+    green: document.getElementById("duration-green"),
+    yellow: document.getElementById("duration-yellow"),
+    red: document.getElementById("duration-red")
+  },
+  applyDurations: document.getElementById("apply-durations"),
+  durationMessage: document.getElementById("phase-duration-message"),
   secondsInput: document.getElementById("seconds-input"),
   frequencyInput: document.getElementById("frequency-input"),
   clockValue: document.getElementById("clock-value"),
@@ -104,6 +113,7 @@ let phaseElapsedMs = 0;
 let phaseTimerActive = false;
 let completedPhases = new Set();
 let activePhaseKey = null;
+let activePhaseSeconds = null;
 let savedA = 0;
 let savedDE = 0;
 let callStack = [];
@@ -134,6 +144,28 @@ function outerPassDelayMs() {
   return T_STATES_PER_PASS / clockHz * 1000 / speedFactor();
 }
 
+function actualPhaseSeconds(seconds) {
+  const loopCount = (seconds * 2) & 0xFF;
+  return loopCount * T_STATES_PER_PASS / (CRYSTAL_MHZ * 500_000);
+}
+
+function updatePhaseDurationDisplays() {
+  const totalNominal = phases.reduce((total, phase) => total + phase.seconds, 0);
+  const totalActual = phases.reduce((total, phase) => total + actualPhaseSeconds(phase.seconds), 0);
+  elements.cycleActual.textContent = `About ${totalActual.toFixed(2)} seconds`;
+  elements.timelineTrack.setAttribute(
+    "aria-label",
+    phases.map((phase) => `${phase.name} ${phase.seconds} seconds`).join(", ")
+  );
+
+  for (const phase of phases) {
+    const legend = document.querySelector(`.timeline-phase[data-phase="${phase.key}"]`);
+    legend.querySelector(".phase-planned").textContent = String(phase.seconds);
+    legend.querySelector(".phase-actual").textContent = actualPhaseSeconds(phase.seconds).toFixed(2);
+    document.getElementById(`ins-${phase.key}-count`).textContent = `MVI B,${hexByte(phase.seconds)}`;
+  }
+}
+
 function updatePhaseReadout() {
   const phase = phaseByKey.get(activePhaseKey);
   if (!phase) {
@@ -144,9 +176,10 @@ function updatePhaseReadout() {
     return;
   }
 
-  const actual = phase.seconds * 2 * T_STATES_PER_PASS / (CRYSTAL_MHZ * 500_000);
+  const seconds = activePhaseSeconds ?? phase.seconds;
+  const actual = actualPhaseSeconds(seconds);
   elements.phaseName.textContent = `${phase.name} · ${phase.key === "green" ? "WALK" : "DON'T WALK"}`;
-  elements.phaseTime.textContent = `${phase.seconds}s / ${actual.toFixed(2)}s`;
+  elements.phaseTime.textContent = `${seconds}s / ${actual.toFixed(2)}s`;
   elements.phaseBadge.dataset.phase = phase.key;
   elements.phaseBadge.innerHTML = `<span class="status-dot"></span> ${phase.name}`;
 }
@@ -211,7 +244,7 @@ function updateTimeline() {
   if (phase && phaseTimerActive) {
     const elapsedMs = phaseElapsedMs + (phaseStartedAt === null ? 0 : performance.now() - phaseStartedAt);
     const elapsed = Math.max(0, elapsedMs / 1000);
-    const expected = phase.seconds * 2 * outerPassDelayMs() / 1000;
+    const expected = ((activePhaseSeconds ?? phase.seconds) * 2) * outerPassDelayMs() / 1000;
     phaseProgress = Math.min(1, elapsed / expected);
   }
 
@@ -270,6 +303,7 @@ function updatePort() {
   if (activePhaseKey === "red" && phase.key === "green") completedPhases = new Set();
   else if (activePhaseKey) completedPhases.add(activePhaseKey);
   activePhaseKey = phase.key;
+  activePhaseSeconds = phase.seconds;
   phaseStartedAt = null;
   phaseElapsedMs = 0;
   phaseTimerActive = false;
@@ -296,7 +330,9 @@ function executeInstruction(manual = false) {
       state.pcIndex = nextIndex;
       break;
     case "load-count":
-      state.b = phaseByKey.get(instruction.phase).seconds;
+      state.b = instruction.phase === activePhaseKey
+        ? activePhaseSeconds
+        : phaseByKey.get(instruction.phase).seconds;
       state.pcIndex = nextIndex;
       break;
     case "call":
@@ -449,6 +485,7 @@ function reset() {
   phaseTimerActive = false;
   completedPhases = new Set();
   activePhaseKey = null;
+  activePhaseSeconds = null;
   savedA = 0;
   savedDE = 0;
   callStack = [];
@@ -491,6 +528,30 @@ function calculateTiming() {
     : "";
 }
 
+function applyPhaseDurations() {
+  const nextDurations = phases.map((phase) => ({
+    phase,
+    seconds: Number(elements.durationInputs[phase.key].value)
+  }));
+  const invalidDuration = nextDurations.find(({ seconds }) => (
+    !Number.isInteger(seconds) || seconds < 1 || seconds > 127
+  ));
+
+  if (invalidDuration) {
+    elements.durationMessage.textContent = "Enter a whole number from 1 to 127 seconds for each phase.";
+    elements.durationMessage.dataset.state = "error";
+    elements.durationInputs[invalidDuration.phase.key].focus();
+    return;
+  }
+
+  for (const { phase, seconds } of nextDurations) phase.seconds = seconds;
+  updatePhaseDurationDisplays();
+  updatePhaseReadout();
+  updateTimeline();
+  elements.durationMessage.textContent = "Timings applied. Each phase updates the next time it starts.";
+  elements.durationMessage.dataset.state = "success";
+}
+
 function toggleTheme() {
   const isDark = document.documentElement.dataset.theme !== "dark";
   document.documentElement.dataset.theme = isDark ? "dark" : "light";
@@ -508,6 +569,7 @@ elements.runButton.addEventListener("click", run);
 elements.pauseButton.addEventListener("click", pause);
 elements.stepButton.addEventListener("click", step);
 elements.resetButton.addEventListener("click", reset);
+elements.applyDurations.addEventListener("click", applyPhaseDurations);
 elements.speedSlider.addEventListener("input", updateSpeedLabel);
 elements.modeToggle.addEventListener("click", () => {
   fastMode = !fastMode;
@@ -519,6 +581,7 @@ elements.secondsInput.addEventListener("input", calculateTiming);
 elements.frequencyInput.addEventListener("input", calculateTiming);
 
 state = freshState();
+updatePhaseDurationDisplays();
 updateSpeedLabel();
 calculateTiming();
 render();

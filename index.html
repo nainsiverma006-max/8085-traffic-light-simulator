@@ -190,6 +190,30 @@
               </button>
             </div>
           </div>
+          <div class="phase-duration-settings" aria-labelledby="phase-duration-title">
+            <div class="phase-duration-heading">
+              <strong id="phase-duration-title">Phase durations</strong>
+              <span>Set each light from 1 to 127 seconds</span>
+            </div>
+            <div class="phase-duration-inputs">
+              <label class="phase-duration-field phase-duration-green" for="duration-green">
+                <span>Green</span>
+                <span class="input-wrap"><input id="duration-green" type="number" min="1" max="127" step="1" value="7" inputmode="numeric"><span>s</span></span>
+              </label>
+              <label class="phase-duration-field phase-duration-yellow" for="duration-yellow">
+                <span>Yellow</span>
+                <span class="input-wrap"><input id="duration-yellow" type="number" min="1" max="127" step="1" value="2" inputmode="numeric"><span>s</span></span>
+              </label>
+              <label class="phase-duration-field phase-duration-red" for="duration-red">
+                <span>Red</span>
+                <span class="input-wrap"><input id="duration-red" type="number" min="1" max="127" step="1" value="10" inputmode="numeric"><span>s</span></span>
+              </label>
+            </div>
+            <div class="phase-duration-actions">
+              <span id="phase-duration-message" role="status" aria-live="polite">Changes apply when each phase starts.</span>
+              <button class="button button-secondary phase-apply-button" id="apply-durations" type="button">Apply timings</button>
+            </div>
+          </div>
           <p class="control-hint" id="control-hint">Step advances one visible instruction. The 65,535-count inner loop is condensed.</p>
         </article>
 
@@ -221,7 +245,7 @@
           <div>
             <h2 class="section-kicker" id="timeline-title">Repeating sequence</h2>
           </div>
-          <span class="cycle-total">One full cycle<strong>About 19.92 seconds</strong></span>
+          <span class="cycle-total">One full cycle<strong id="cycle-actual">About 19.92 seconds</strong></span>
         </div>
         <div class="timeline-track" id="timeline-track" aria-label="Green 7 seconds, Yellow 2 seconds, Red 10 seconds">
           <div class="timeline-segment segment-green" data-phase="green">
@@ -235,9 +259,9 @@
           </div>
         </div>
         <div class="timeline-legend" aria-label="Phase durations">
-          <div class="timeline-phase"><span class="phase-key phase-key-green"></span><span><strong>Green</strong><small>7 sec planned · 7.34 sec actual</small></span></div>
-          <div class="timeline-phase"><span class="phase-key phase-key-yellow"></span><span><strong>Yellow</strong><small>2 sec planned · 2.10 sec actual</small></span></div>
-          <div class="timeline-phase"><span class="phase-key phase-key-red"></span><span><strong>Red</strong><small>10 sec planned · 10.49 sec actual</small></span></div>
+          <div class="timeline-phase" data-phase="green"><span class="phase-key phase-key-green"></span><span><strong>Green</strong><small><span class="phase-planned">7</span> sec planned · <span class="phase-actual">7.34</span> sec actual</small></span></div>
+          <div class="timeline-phase" data-phase="yellow"><span class="phase-key phase-key-yellow"></span><span><strong>Yellow</strong><small><span class="phase-planned">2</span> sec planned · <span class="phase-actual">2.10</span> sec actual</small></span></div>
+          <div class="timeline-phase" data-phase="red"><span class="phase-key phase-key-red"></span><span><strong>Red</strong><small><span class="phase-planned">10</span> sec planned · <span class="phase-actual">10.49</span> sec actual</small></span></div>
         </div>
         <div class="timeline-foot"><span>Then the cycle starts again</span><span>JMP START <span aria-hidden="true">↺</span></span></div>
       </section>
